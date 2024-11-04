@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <title>Document</title>
+</head>
+<body>
+    
+    <form method="post">
+        {%csrf_token%}
+        <button type="sumbit">delete</button>
+    </form>
+
+    <a href="{ % url 'task_list' % }">return</a>
+
+</body>
+</html>

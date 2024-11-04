@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Document</title>
+</head>
+<body>
+
+    <p style="font-size: 30px;font-weight: 600;">Register</p><hr><br>
+
+    <form method="post" action="{% url 'register' %}">
+        {%csrf_token%}
+        {{form.as_p}}
+        <button type="submit">Register</button>
+    </form> 
+        
+    </form>
+    <p>Have an account? <a href= "{% url 'login'%}">Login here!</a></p>
+
+</body>
+</html>

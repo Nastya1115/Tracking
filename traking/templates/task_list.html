@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Document</title>
+</head>
+<body>
+
+    <h1>All tasks</h1>
+
+    {% if request.user.is_authenticated %}
+    <form method="post" style="float: right;">
+        {%csrf_token%}
+        {{form.as_p}}
+        <button type="submit">submit</button>
+    </form>
+    {% endif %}
+
+    <ul>
+    {% for task in object_list %}
+    <li>{{ task.title }} <br> {{task.description}}</li>
+    <a href="{% url 'update_task' task.pk %}">update</a>
+    <a href="{% url 'delete_task' task.pk %}">delete</a>
+    {% endfor %}
+    </ul>
+    
+</body>
+</html>

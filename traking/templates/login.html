@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Document</title>
+</head>
+<body>
+    
+    <p style="font-size: 30px;font-weight: 600;">Login</p><hr><br>
+
+    {%if messages%}
+    <ul class="messages">
+        {%for message in messages%}
+        <li {% if message.tags%} class="{{message.tags}}"{%endif%}>{{message}}</li>
+        {%endfor%}
+    </ul>
+    {%endif%}
+    <form method="post" action="{% url 'login' %}">
+        {%csrf_token%}
+        {{form.as_p}}
+        <button type="submit">Login</button>
+    </form>
+        
+    </form>
+    <p>Have no account? <a href= "{% url 'register'%}">Register here!</a></p>
+
+</body>
+</html>
