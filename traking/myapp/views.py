@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.views.generic import ListView, CreateView, UpdateView, DeleteView, DetailView
 from myapp.models import *
 from django.contrib import messages
 from myapp.forms import *
@@ -73,8 +73,23 @@ class TaskDeleteView(LoginRequiredMixin, UserIsOwnerMixin, DeleteView):
     success_url = '/'
 
 class TaskListView(ListView):
+
     model = Task
     template_name = 'task_list.html'
 
     def get_queryset(self):
-        return Task.objects.all().order_by('priority')
+        option = self.request.GET.get('option')
+        if option:
+            return Task.objects.all().order_by(option)
+        else:
+            return Task.objects.all()
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['options'] = ['priority', 'title', 'status']
+        context['selected_option'] = self.request.GET.get('option')
+        return context
+    
+class TaskDetailView(DetailView):
+    model = Task
+    template_name = 'task_detail.html'

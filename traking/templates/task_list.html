@@ -5,22 +5,34 @@
 </head>
 <body>
 
-    <h1>All tasks</h1>
-
     {% if request.user.is_authenticated %}
-    <form method="post" style="float: right;">
-        {%csrf_token%}
-        {{form.as_p}}
-        <button type="submit">submit</button>
-    </form>
+    <a href="{% url 'create_task' %}" style="float: right;">Create new task</a>
     {% endif %}
 
+    <h1>All tasks</h1>
+
+    <form method="get" action="">
+        {% csrf_token %}
+        <label for="option">Sort by:</label>
+        <select name="option" id="option">
+            {% for option in options %}
+                <option value="{{ option }}" {% if option == selected_option %}selected{% endif %}>{{ option }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit">Filter</button>
+    </form>
+
+
     <ul>
-    {% for task in object_list %}
-    <li>{{ task.title }} <br> {{task.description}}</li>
-    <a href="{% url 'update_task' task.pk %}">update</a>
-    <a href="{% url 'delete_task' task.pk %}">delete</a>
-    {% endfor %}
+        {% for task in object_list %}
+            <li>
+                <a href="{% url 'detail_task' task.pk %}"><b>{{ task.title }}</b></a><br>
+                {{ task.description }}<br>
+                <a href="{% url 'update_task' task.pk %}">Update</a>
+                <a href="{% url 'delete_task' task.pk %}">Delete</a>
+            </li>
+            <br>
+        {% endfor %}
     </ul>
     
 </body>
