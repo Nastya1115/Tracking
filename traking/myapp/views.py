@@ -58,7 +58,7 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
     success_url = '/'
 
     def form_valid(self, form):
-        form.instance.creator = self.request.user  # Привязываем текущего пользователя к полю creator
+        form.instance.creator = self.request.user
         return super().form_valid(form)
 
 class TaskUpdateView(LoginRequiredMixin, UserIsOwnerMixin, UpdateView):
