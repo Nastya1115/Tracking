@@ -93,3 +93,19 @@ class TaskListView(ListView):
 class TaskDetailView(DetailView):
     model = Task
     template_name = 'task_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = self.get_object().comments.all()
+        context['form'] = CommentForm()
+        return context
+
+    def post(self, request, *args, **kwargs):
+        form = CommentForm(request.POST)
+        form.instance.author = self.request.user
+        form.instance.task = self.get_object()
+        
+        if form.is_valid():
+            form.save()
+            return redirect('detail_task', pk = self.get_object().id)
+        

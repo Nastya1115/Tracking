@@ -14,12 +14,14 @@ class Task(models.Model):
     status = models.CharField(max_length=25)
     priority = models.IntegerField()
     end_date = models.DateField()
+    image = models.ImageField(upload_to='media/', blank = True, null= True)
 
     def __str__(self):
         return self.title
 
 class Comment(models.Model):
-    creator = models.ForeignKey(User, on_delete=models.CASCADE)
-    task = models.ForeignKey(Task, on_delete=models.CASCADE)
-    description = models.TextField()
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, related_name='comments' ,on_delete=models.CASCADE)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
 

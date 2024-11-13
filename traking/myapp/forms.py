@@ -14,7 +14,13 @@ class UserAuthForm(AuthenticationForm):
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ['title', 'description', 'status', 'priority', 'end_date']
+        fields = ['title', 'description', 'status', 'priority', 'end_date', 'image']
+        widgets = {
+            'end_date': forms.DateInput(attrs={'type': 'date'}),
+        }
 
-
-        
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+       

@@ -5,13 +5,36 @@
 </head>
 <body>
     
-    {{task.title}}
-    <br>
-    {{task.description}}
-    <br>
+    {%if task.image%}
+    <img src="{{ task.image.url }}">
+    {%endif%}
+    <h1>{{task.title}}</h1>
+    <hr>
+    <p style="font-size: 20px;">{{task.description}}</p>
+    <hr>
     <p>Priority: {{task.priority}}</p>
     <p>Status: {{task.status}}</p>
     <p>Due: {{task.end_date}}</p>
+    <hr>
+
+    <br>
+    <h2>Comments</h2>
+
+    <form method="post">
+        {%csrf_token%}
+        {{form.as_p}}
+        <button type="submit">submit</button>
+    </form>
+    <br>
+    <ul>
+        {%for comment in comments%}
+        <li>
+            <b>{{comment.author}}</b><br>
+            {{comment.content}}<br>
+            Posted on: {{comment.created_at}}
+        </li>
+        {%endfor%}
+    </ul>
 
 </body>
 </html>

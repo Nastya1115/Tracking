@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>All tasks</title>
 </head>
 <body>
 
-    {% if request.user.is_authenticated %}
-    <a href="{% url 'create_task' %}" style="float: right;">Create new task</a>
-    {% endif %}
+    <div style="background-color: #4d4d4d; padding:30px">
+        <h1 style="color:#fff">All tasks</h1>
+    </div><hr>
 
-    <h1>All tasks</h1>
+    {% if request.user.is_authenticated %}
+    <a href="{% url 'create_task' %}" style="text-decoration: none;color: #000; float: right;">Create new task</a>
+    {% endif %}
 
     <form method="get" action="">
         {% csrf_token %}
@@ -21,19 +24,30 @@
         </select>
         <button type="submit">Filter</button>
     </form>
+    <hr>
 
 
-    <ul>
-        {% for task in object_list %}
-            <li>
-                <a href="{% url 'detail_task' task.pk %}"><b>{{ task.title }}</b></a><br>
-                {{ task.description }}<br>
-                <a href="{% url 'update_task' task.pk %}">Update</a>
-                <a href="{% url 'delete_task' task.pk %}">Delete</a>
-            </li>
-            <br>
-        {% endfor %}
-    </ul>
-    
+    {% for task in object_list %}
+    <div style="display:flex; gap: 10px;">
+        {%if task.status == 'unfinished'%}
+        <i class="fa fa-times" aria-hidden="true" style="padding-top: 10px; color: crimson;font-size: 50px;"></i>
+        {%elif task.status == 'finished'%}
+        <i class="fa fa-check" aria-hidden="true" style="padding-top: 10px; color: rgb(60, 220, 20);font-size: 50px;"></i>
+        {%elif task.status == 'work'%}
+        <i class="fa fa-clock-o" aria-hidden="true" style="padding-top: 10px; color: rgb(220, 133, 20);font-size: 50px;"></i>
+        {%else%}
+        <i class="fa fa-question" aria-hidden="true" style="padding-top: 10px; color: rgb(69, 68, 70);font-size: 50px;"></i>
+        {%endif%}
+        <div style="max-width: 80%;">
+        <a href="{% url 'detail_task' task.pk %}" style="font-weight:bold; color:#000">{{task.title}}</a>
+        <p style="color: #636363">{{task.description}}</p>
+        </div>
+        <div style="margin-left:auto; padding-top: 43px;"> till: {{task.end_date}}</div>
+    </div>
+    <a href="{% url 'update_task' task.pk %}" style="text-decoration: none;color: #000;">Update</a>
+    <a href="{% url 'delete_task' task.pk %}" style="text-decoration: none;color: #000;">Delete</a>
+    <hr>
+    {% endfor %}
+
 </body>
 </html>
